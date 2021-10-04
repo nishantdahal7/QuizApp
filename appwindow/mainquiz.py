@@ -571,4 +571,4 @@ show_frame(frame1)
 
 window.mainloop()
 
-conn.close()
+conn.close() #to close database connection to save memomry.
