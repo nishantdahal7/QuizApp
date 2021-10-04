@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-import random  # For randomizing the sequence in which questions are asked and their options are displayed
-import sqlite3  # For maintaining the data of playername and their scores, adding questions & options in database
+import random  # To present the questions in a random manner
+import sqlite3  # For keeping track of the data of playername and their scores as well as to further add questions & options in database
 import _pickle as cPickle
 
 game_score = 0
@@ -11,7 +11,7 @@ questions_attempted = 1  # For keeping count of questions diplayed(it'll be used
 qualifying_score = 3
 errors = None  # For Error Checking while uploading question & options in database
 
-# *********************** TIMER **************************#
+#timer start
 
 time_in_sec = 20  # Total Time for Quiz
 
@@ -31,9 +31,9 @@ def timer():
         completed_session()
 
 
-# *********************** TIMER **************************#
+#timer end
 
-# ************** DATABASE DATABASE DATABASE **************#
+#database backend
 
 conn = sqlite3.connect('Database.db')
 
@@ -89,7 +89,7 @@ def load_questions_options():
         return c.fetchall()
 
 
-# ************** DATABASE DATABASE DATABASE **************#
+#database backend end
 
 # Function To Raise The Chosen Frame
 def show_frame(frame):
@@ -378,3 +378,197 @@ def validate_questions_options_data():
     else:
         errors = False
         loop_check()
+
+
+window = Tk()
+
+window.state('zoomed')
+
+window.title("    Quiz Game")
+
+window.iconbitmap('images/MultiUse Images/quiz.ico')
+
+window.rowconfigure(0, weight=1)
+window.columnconfigure(0, weight=1)
+frame1 = Frame(window)
+frame2 = Frame(window)
+frame3 = Frame(window)
+frame4 = Frame(window)
+frame5 = Frame(window)
+
+for frame in (frame1, frame2, frame3, frame4, frame5):
+    frame.grid(row=0, column=0, sticky='nsew')
+
+# ============================================== FRAME 1 ==================================================#
+
+bg_img = PhotoImage(file="images/Home Page/bghome.png")
+my_label = Label(frame1, image=bg_img)
+my_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+start_btn = PhotoImage(file='images/Home Page/bgFormplay.png')
+play_button = Button(frame1, image=start_btn, cursor="hand2", borderwidth=0, bg="#5f4bd1",
+                     command=lambda: show_frame(frame2))
+play_button.pack(side="bottom", pady=50)
+
+exit_btn = PhotoImage(file='images/MultiUse Images/exitForm.png')
+exit_button = Button(frame1, image=exit_btn, cursor="hand2", borderwidth=0, bg="#683ed2", command=window.destroy)
+exit_button.pack(padx=30, pady=30, anchor="ne")
+
+add_questions_btn = PhotoImage(file="images/AddQuestions Page/addQuestionsbtn.png")
+add_questions_button = Button(frame1, image=add_questions_btn, cursor="hand2", borderwidth=0, bg="#9400d4",
+                              command=add_questions)
+add_questions_button.place(x=1253, y=705)
+
+error_img = PhotoImage(file="images/AddQuestions Page/error2.png")
+ok_btn = PhotoImage(file="images/AddQuestions Page/okbtn.png")
+
+# ============================================== FRAME 2 ==================================================#
+
+bg2_img = PhotoImage(file='images/UserDetails Page/bgbgbg.png')
+my_label2 = Label(frame2, image=bg2_img)
+my_label2.place(x=0, y=0, relwidth=1, relheight=1)
+
+form = PhotoImage(file="images/UserDetails Page/bgForm3.png")
+form_label = Label(frame2, image=form)
+form_label.place(x=475, y=170, width=135, height=180)
+
+title = Label(frame2, text="Player Details", font=("times new roman", 20, "bold"), bg="#3683d1", fg="#ffffff").place(
+    x=725, y=50)
+
+# First Row
+name = Label(frame2, text="Player Name", font=("times new roman", 14, "bold"), bg="#4273d2", fg="#ffffff").place(x=650,
+                                                                                                                 y=175)
+input_name = Entry(frame2, font=("times new roman", 14), bg="#8319d3", fg="#ffffff", highlightthickness=5)
+input_name.config(highlightbackground="#74159d", highlightcolor="#74159d")
+input_name.place(x=650, y=205, width=270)
+
+form_exit_btn = PhotoImage(file="images/MultiUse Images/exitForm.png")
+form_exit_button = Button(frame2, image=form_exit_btn, cursor="hand2", borderwidth=0, bg="#683ed2",
+                          command=lambda: show_frame(frame1))
+form_exit_button.pack(padx=30, pady=30, anchor="ne")
+
+# Second Row
+mail = Label(frame2, text="Email Id", font=("times new roman", 14, "bold"), bg="#4273d2", fg="#ffffff").place(x=650,
+                                                                                                              y=260)
+txt_mail = Entry(frame2, font=("times new roman", 14), bg="#8319d3", fg="#ffffff", highlightthickness=5)
+txt_mail.config(highlightbackground="#74159d", highlightcolor="#74159d")
+txt_mail.place(x=650, y=290, width=270)
+
+# Third Row
+contact = Label(frame2, text="Contact Number", font=("times new roman", 14, "bold"), bg="#4273d2", fg="#ffffff").place(
+    x=650, y=345)
+txt_contact = Entry(frame2, font=("times new roman", 14), bg="#8319d3", fg="#ffffff", highlightthickness=5)
+txt_contact.config(highlightbackground="#74159d", highlightcolor="#74159d")
+txt_contact.place(x=650, y=375, width=270)
+
+# Fourth Row
+Stream = Label(frame2, text="Stream", font=("times new roman", 14, "bold"), bg="#4273d2", fg="#ffffff",
+               highlightthickness=5).place(x=650, y=430)
+
+combo_stream = ttk.Combobox(frame2, font=("times new roman", 14), state='readonly', justify=CENTER)
+combo_stream['values'] = ("Select your Stream", "Computing", "Ethical")
+combo_stream.place(x=650, y=460, width=270)
+combo_stream.current(0)
+
+form_start_button = Button(frame2, image=start_btn, cursor="hand2", borderwidth=0, bg="#5f4bd1", command=submit_form)
+form_start_button.pack(side="bottom", pady=50)
+
+# ============================================== FRAME 3 ==================================================#
+
+quiz_bg_img = PhotoImage(file="images/Quiz Page/finalquizbg.png")
+img_label = Label(frame3, image=quiz_bg_img)
+img_label.place(x=0, y=0, relheight=1, relwidth=1)
+
+# NEXT BUTTON & FINISH BUTTON
+next_btn = PhotoImage(file="images/Quiz Page/nextF3.png")
+finish_btn = PhotoImage(file="images/Quiz Page/finishF2.png")
+
+# Label for Questions
+mylabel = Label()
+
+# Label for Options
+myoptionlabel = Label()
+
+# Button for Next/Finish
+button = Button()
+
+# Label for Timer
+timer_label = Label(frame3, font="times 50", fg="#FFFFFF", bg="#000000")
+timer_label.place(x=1200, y=80)
+
+input_answer = StringVar()
+var = IntVar()
+var2 = StringVar()
+var2.set(' ')
+
+questions = ["Which one is the first fully supported 64-bit operating system?",
+             "Which protocol is used to send e-mail?",
+             "Who created the C programming Language?",
+             "One Terabyte (1 TB) is equal to?"]
+
+solutions = {"Which one is the first fully supported 64-bit operating system?": "Linux",
+             "Which protocol is used to send e-mail?": "SMTP",
+             "Who created the C programming Language?": "Dennis Ritchie",
+             "One Terabyte (1 TB) is equal to?": "1024 GB"}
+
+answers = [["Windows Vista", "Mac", "Linux", "Windows XP"], ["HTTP", "POP3", "SMTP", "SSH"],
+           ["Ken Thompson", "Dennis Ritchie", "Robin Milner", "Frieder Nake"], ["1028 GB", "1012 GB", " 1000 GB", "1024 GB"]]
+
+# ============================================== FRAME 4 ==================================================#
+
+score_bg_img = PhotoImage(file="images/Last Page/quizscorebg.png")
+
+score_img_label = Label(frame4, image=score_bg_img, width=1920)
+score_img_label.place(x=0, y=0, relheight=1, relwidth=1)
+
+bact_to_home_btn = PhotoImage(file="images/Last Page/PlayAgain.png")
+bact_to_home_button = Button(frame4, image=bact_to_home_btn, bg="#f8f8f8", cursor="hand2", borderwidth=0,
+                             command=refresh_session)
+bact_to_home_button.place(x=500, y=50)
+
+view_highscore_btn = PhotoImage(file="images/Last Page/Highscore2.png")
+view_highscore_button = Button(frame4, image=view_highscore_btn, bg="#f8f8f8", cursor="hand2", borderwidth=0,
+                               command=lambda: load_highscores(frame5))
+view_highscore_button.place(x=500, y=400)
+
+# ============================================== FRAME 5 ==================================================#
+
+last_page_bg_label = Label(frame5, image=score_bg_img, width=1920)
+last_page_bg_label.place(x=0, y=0, relheight=1, relwidth=1)
+
+highscore_exit_btn = PhotoImage(file="images/Last Page/bg1exit.png")
+highscore_exit_button = Button(frame5, image=highscore_exit_btn, cursor="hand2", borderwidth=0, bg="white",
+                               command=refresh_session)
+highscore_exit_button.pack(padx=30, pady=30, anchor="ne")
+
+# ============================================== FRAME 6 ==================================================#
+
+okbtn = PhotoImage(file="images/QualifyingMessage Page/okbtn2.png")
+qualify_mssg = PhotoImage(file="images/QualifyingMessage Page/qualify_mssg2.png")
+qualify_fail_mssg = PhotoImage(file="images/QualifyingMessage Page/qualify_failmssg2.png")
+
+# ============================================== ADD QUESTION CANVAS ==================================================#
+add_questions_bg = PhotoImage(file="images/AddQuestions Page/addQuestionbg.png")
+submit_btn_img = PhotoImage(file="images/AddQuestions Page/submitbtn.png")
+
+submit_btn = Button()
+
+my_canvas = Canvas(width=1100, height=650)
+
+get_question = ""
+get_options = ""
+get_correct_option = ""
+
+input_question = Entry()
+input_options = Entry()
+input_correct_option = Entry()
+
+formatted_options_list = []
+
+err_var = IntVar()
+
+show_frame(frame1)
+
+window.mainloop()
+
+conn.close()
